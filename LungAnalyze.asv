@@ -3,7 +3,7 @@ lungs_img = imread('test_lungs.jpg');
 
 grayImg = rgb2gray(lungs_img);
 
-edges = edge(grayImg, 'canny');
+edges = edge(grayImg, ''); %
 
 figure;
 subplot(1, 2, 1);
