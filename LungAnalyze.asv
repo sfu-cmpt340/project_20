@@ -3,15 +3,62 @@ lungs_img = imread('test_lungs.jpg');
 
 grayImg = rgb2gray(lungs_img);
 
-edges = edge(grayImg, ''); %
+edges = edge(grayImg, 'canny');
 
 figure;
-subplot(1, 2, 1);
+subplot(2, 3, 1);
 imshow(grayImg);
 title('Original Image');
 
-subplot(1, 2, 2);
+subplot(2, 3, 2);
 imshow(edges);
+title('Edges Detected Canny');
+
+edges2 = edge(grayImg, 'sobel');
+
+subplot(2, 3, 3);
+imshow(edges2);
+title('Edges Detected Sobel');
+
+edges3 = edge(grayImg, 'prewitt');
+
+subplot(2, 3, 4);
+imshow(edges3);
+title('Edges Detected');
+
+edges4 = edge(grayImg, 'roberts');
+
+subplot(2, 3, 4);
+imshow(edges4);
+title('Edges Detected');
+
+edges5 = edge(grayImg, 'log');
+
+subplot(2, 3, 4);
+imshow(edges5);
+title('Edges Detected');
+
+edges6 = edge(grayImg, 'canny');
+
+subplot(2, 3, 4);
+imshow(edges6);
+title('Edges Detected');
+
+edges7 = edge(grayImg, 'canny_old');
+
+subplot(2, 3, 4);
+imshow(edges7);
+title('Edges Detected');
+
+edges8 = edge(grayImg, 'zerocross');
+
+subplot(2, 3, 4);
+imshow(edges8);
+title('Edges Detected');
+
+edges9 = edge(grayImg, 'approxcanny');
+subplot(2, 3, 4);
+imshow(edges4);
 title('Edges Detected');
 
 % imwrite(edges, 'lung_edges_result.jpg');
