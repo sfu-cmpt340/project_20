@@ -98,9 +98,6 @@ end
 %% 
 function edgeDe = edge_detections(lungs_img)
     grayImg = im2gray(lungs_img);
-    
-    %maybe this works
-    %grayImg = lungs_img;
 
     detection_types = ["Sobel", "Prewitt", "Roberts", "Log", "Canny", "Canny_old", "Zerocross", "Approxcanny"];
 
