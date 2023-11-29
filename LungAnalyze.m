@@ -93,8 +93,9 @@ for k = 1 : length(theFiles)
     % imshow(imageArray);  % Display image.
     %drawnow; % Force display to update immediately.
     lungs_img = imread(fullFileName);
-    edge_detections(lungs_img);
-    find_circles(lungs_img, [0.22 0.6], 0.85)
+    %edge_detections(lungs_img);
+    find_circles(lungs_img, [0.22 0.6], 0.84, 'bw');
+    find_circles(lungs_img, [0.21 0.55], 0.88, 'edge');
 end
 
 %% 
@@ -118,39 +119,58 @@ function edgeDe = edge_detections(lungs_img)
     end
 end
 
-function find_circles(img, intensity, circle_sens)
+function find_circles(img, intensity, circle_sens, method)
     % find_circles  tries to detect circles in the img based on the provided
     % thresholds
     %   find_circles(img, [min_in max_in], circle_sens) adjusts img contrast
     %   based on [min_in max_in] and detects circles based on circle_sens
     % Inputs:
-    %   img     : the image to detect circles in
-    %   intensity: [min = 0...1 max = 0...1], min < max; a double vector representing the
+    %   img         : the image to detect circles in
+    %   intensity   : [min = 0...1 max = 0...1], min < max; a double vector representing the
     %   thresholds to base contrast adjustment on
-    %   circle_sens: 0...1; the threshold for circle detection. Greater values
+    %   circle_sens : 0...1; the threshold for circle detection. Greater values
     %   are less sensitive
+    %   method      : the filter to use circle detection on
     arguments
       img
-      intensity (1,2) double
-      circle_sens double {mustBeInRange(circle_sens,0,1)}
+      intensity (1,2) double = [0.2 0.6]
+      circle_sens double {mustBeInRange(circle_sens,0,1)} = 0.85
+      method (1,:) char {mustBeMember(method,{'bw','edge'})} = 'bw'
     end
+    figure;
+    set(gcf, 'Position',  [360, 360, 1280, 540]);
+    subplot(1,2,1);
+    imshow(img);
+    title("Original");
+
     img = im2gray(img);
     img_adjusted = imadjust(img, intensity);
-    figure
-    imshow(img_adjusted)
-    title("Contrast Adjusted")
+    subplot(1,2,2);
+%     imshow(img_adjusted)
+%     title("Contrast Adjusted");
     
-    figure
     img_BW = imbinarize(img_adjusted);
-    imshow(img_BW);
-    title("Circles")
+    edges = edge(img_BW, 'canny');
+
     % detect circles
-    [centers, radii] = imfindcircles(img_BW,[9 50], 'ObjectPolarity','bright', 'Sensitivity', circle_sens);
+    if strcmp(method,'edge')
+        imshow(edges)
+        title("Edge detection");
+        [centers, radii] = imfindcircles(edges,[9 50], 'ObjectPolarity','bright', 'Sensitivity', circle_sens);
+    elseif strcmp(method,'bw')
+        imshow(img_adjusted)
+        title("Contrast adjusted");
+        [centers, radii] = imfindcircles(img_BW,[9 50], 'ObjectPolarity','bright', 'Sensitivity', circle_sens);
+    end
     if not(isempty(centers))
-        max_len = min([length(radii) 3]);
+        max_len = min([length(radii) 3]); % only display up to the x strongest circles
         centersStrong5 = centers(1:max_len,:); 
         radiiStrong5 = radii(1:max_len);
-        viscircles(centersStrong5, radiiStrong5,'EdgeColor','b');
+        if strcmp(method,'edge') % display in red
+            viscircles(centersStrong5, radiiStrong5,'EdgeColor','r');
+        else
+            viscircles(centersStrong5, radiiStrong5,'EdgeColor','b');
+        end
     else
         disp("No circles found.");
     end
