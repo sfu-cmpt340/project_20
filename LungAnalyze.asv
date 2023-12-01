@@ -83,38 +83,39 @@ filePattern = fullfile(myFolder, '*.png'); % Change to whatever pattern you need
 theFiles = dir(filePattern);
 close all;
 itemNames = [];
-fileNames = [];
 for k = 1 : length(theFiles)
     baseFileName = theFiles(k).name;
-    itemNames = [itemNames {[baseFileName ' 50% likely to have mass']}];
     fullFileName = fullfile(theFiles(k).folder, baseFileName);
-    fileNames = [fileNames {[fullFileName]}];
+    itemNames = [itemNames {[fullFileName]}];
     fprintf(1, 'Now reading %s\n', fullFileName);
     disp(fullFileName);
     % Now do whatever you want with this file name,
     % such as reading it in as an image array with imread()
-    
+    % imageArray = imread(fullFileName);
+    % imshow(imageArray);  % Display image.
+    %drawnow; % Force display to update immediately.
     lungs_img = imread(fullFileName);
-
-    %TODO: SORT ItemNames from most to least
+    %edge_detections(lungs_img);
+    %find_circles(lungs_img,image_number, [0.22 0.6], 0.84, 'bw');
+    %find_circles(lungs_img,image_number, [0.21 0.55], 0.88, 'edge');
+    
 end
 %%
 % Create a figure
 fig = figure('Name', 'GUI List Example', 'units', 'normalized', 'Position', [0.2, 0.2, 0.6, 0.6]);
 
 % Create a listbox
-listbox = uicontrol('Style', 'listbox', 'units', 'normalized', 'Position', [0.1, 0.1, 0.8, 0.8], 'String', itemNames, 'UserData', fileNames, 'Callback', @listboxCallback);
+listbox = uicontrol('Style', 'listbox', 'units', 'normalized', 'Position', [0.1, 0.1, 0.8, 0.8], 'String', itemNames, 'Callback', @listboxCallback);
 
 % Callback function for listbox selection
 function listboxCallback(src, event)
     % Get the selected item from the listbox
     index = get(src, 'Value');
     items = get(src, 'String');
-    UserData = get(src, 'UserData');
-    filename = UserData{index};
-    disp(filename);
-    fprintf(1, 'Now reading %s\n', filename);
-    lungs_img = imread(filename);
+    selected_item = items{index};
+    
+    fprintf(1, 'Now reading %s\n', selected_item);
+    lungs_img = imread(selected_item);
     find_circles(lungs_img, [0.22 0.6], 0.84, [0.21 0.55], 0.88);
 end
 
@@ -155,8 +156,9 @@ function find_circles(img, intensity_bw, circle_sens_bw, intensity_edge, circle_
     %     title("Contrast Adjusted");
         
     img_BW = imbinarize(img_adjusted_bw);
+    edges = edge(img_BW, 'canny');
     imshow(img_adjusted_bw)
-    title("Contrast adjusted");
+    title("BW Contrast adjusted");
     [centers, radii] = imfindcircles(img_BW,[9 50], 'ObjectPolarity','bright', 'Sensitivity', circle_sens_bw);
     if not(isempty(centers))
         max_len = min([length(radii) 3]); % only display up to the x strongest circles
@@ -175,7 +177,7 @@ function find_circles(img, intensity_bw, circle_sens_bw, intensity_edge, circle_
     edges = edge(img_BW, 'canny');
     imshow(edges)
     title("Edge detection");
-    [centers, radii] = imfindcircles(edges,[9 50], 'ObjectPolarity','bright', 'Sensitivity', circle_sens_edge);
+        [centers, radii] = imfindcircles(edges,[9 50], 'ObjectPolarity','bright', 'Sensitivity', circle_sens);
     
     if not(isempty(centers))
         max_len = min([length(radii) 3]); % only display up to the x strongest circles
