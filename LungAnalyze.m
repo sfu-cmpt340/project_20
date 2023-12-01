@@ -82,13 +82,16 @@ end
 filePattern = fullfile(myFolder, '*.png'); % Change to whatever pattern you need.
 theFiles = dir(filePattern);
 close all;
-itemNames = [];
-fileNames = [];
+itemNames = cell(length(theFiles));
+fileNames = cell(length(theFiles));
 for k = 1 : length(theFiles)
     baseFileName = theFiles(k).name;
-    itemNames = [itemNames {[baseFileName ' 50% likely to have mass']}];
+    
     fullFileName = fullfile(theFiles(k).folder, baseFileName);
-    fileNames = [fileNames {[fullFileName]}];
+
+    itemNames(k) = {[baseFileName ' 50% likely to have mass']};
+    fileNames(k) = {fullFileName};
+
     fprintf(1, 'Now reading %s\n', fullFileName);
     disp(fullFileName);
     % Now do whatever you want with this file name,
@@ -100,7 +103,7 @@ for k = 1 : length(theFiles)
 end
 %%
 % Create a figure
-fig = figure('Name', 'GUI List Example', 'units', 'normalized', 'Position', [0.2, 0.2, 0.6, 0.6]);
+fig = figure('Name', 'GUI', 'units', 'normalized', 'Position', [0.2, 0.2, 0.6, 0.6]);
 
 % Create a listbox
 listbox = uicontrol('Style', 'listbox', 'units', 'normalized', 'Position', [0.1, 0.1, 0.8, 0.8], 'String', itemNames, 'UserData', fileNames, 'Callback', @listboxCallback);
@@ -111,16 +114,17 @@ function listboxCallback(src, event)
     index = get(src, 'Value');
     items = get(src, 'String');
     UserData = get(src, 'UserData');
+    selected_item = items{index};
     filename = UserData{index};
     disp(filename);
     fprintf(1, 'Now reading %s\n', filename);
     lungs_img = imread(filename);
-    find_circles(lungs_img, [0.22 0.6], 0.84, [0.21 0.55], 0.88);
+    find_circles(lungs_img, selected_item, [0.22 0.6], 0.84, [0.21 0.55], 0.88);
 end
 
 
 %%
-function find_circles(img, intensity_bw, circle_sens_bw, intensity_edge, circle_sens_edge)
+function find_circles(img, img_name, intensity_bw, circle_sens_bw, intensity_edge, circle_sens_edge)
     % find_circles  tries to detect circles in the img based on the provided
     % thresholds
     %   find_circles(img, [min_in max_in], circle_sens) adjusts img contrast
@@ -134,12 +138,13 @@ function find_circles(img, intensity_bw, circle_sens_bw, intensity_edge, circle_
     %   method      : the filter to use circle detection on
     arguments
       img
+      img_name
       intensity_bw (1,2) double = [0.2 0.6]
       circle_sens_bw double {mustBeInRange(circle_sens_bw,0,1)} = 0.85
       intensity_edge (1,2) double = [0.2 0.6]
       circle_sens_edge double {mustBeInRange(circle_sens_edge,0,1)} = 0.85
     end
-    figure;
+    figure('Name', img_name);
     set(gcf, 'Position',  [360, 360, 1280, 540]);
     subplot(1,3,1);
     imshow(img);
