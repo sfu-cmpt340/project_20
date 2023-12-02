@@ -82,8 +82,8 @@ end
 filePattern = fullfile(myFolder, '*.png'); % Change to whatever pattern you need.
 theFiles = dir(filePattern);
 close all;
-itemNames = cell(length(theFiles));
-fileNames = cell(length(theFiles));
+itemNames = cell(0);
+fileNames = cell(0);
 for k = 1 : length(theFiles)
     baseFileName = theFiles(k).name;
     
