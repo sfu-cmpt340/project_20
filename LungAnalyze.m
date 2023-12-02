@@ -118,8 +118,11 @@ function listboxCallback(src, event)
     filename = UserData{index};
     disp(filename);
     fprintf(1, 'Now reading %s\n', filename);
-    lungs_img = imread(filename);
-    find_circles(lungs_img, selected_item, [0.22 0.6], 0.84, [0.21 0.55], 0.88);
+    if(not(isempty(filename)))
+        lungs_img = imread(filename);
+        find_circles(lungs_img, selected_item, [0.22 0.6], 0.84, [0.21 0.55], 0.88);
+    end
+
 end
 
 
