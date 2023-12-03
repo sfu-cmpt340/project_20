@@ -1,15 +1,15 @@
-% Initialize myFolder to an empty string
-myFolder = '';
+%% Find folder files and check images
+% Specify the folder where the files live [samples,samples-normal].
+myFolder = 'samples';
 
-% Keep prompting the user until a valid folder is provided
-while ~isfolder(myFolder)
-    % Prompt the user to manually input the folder path
-    myFolder = input('Enter the folder path: ', 's');
-
-    % Check if the folder exists
-    if ~isfolder(myFolder)
-        errorMessage = sprintf('Error: The following folder does not exist:\n%s\nPlease specify a valid folder.', myFolder);
-        uiwait(warndlg(errorMessage));
+% Check to make sure that folder actually exists.  Warn user if it doesn't.
+if ~isfolder(myFolder)
+    errorMessage = sprintf('Please specify a new folder.\nTo use the provided sample folder, please use /src/samples for samples with mass, or use /src/samples-normal without mass', myFolder);
+    uiwait(warndlg(errorMessage));
+    myFolder = uigetdir(); % Ask for a new one.
+    if myFolder == 0
+         % User clicked Cancel
+         return;
     end
 end
 % Get a list of all files in the folder with the desired file name pattern.
@@ -23,7 +23,6 @@ for k = 1 : length(theFiles)
     baseFileName = theFiles(k).name;
     
     fullFileName = fullfile(theFiles(k).folder, baseFileName);
-
 
 
     fprintf(1, 'Now reading %s\n', fullFileName);
