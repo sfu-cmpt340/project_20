@@ -84,13 +84,13 @@ theFiles = dir(filePattern);
 close all;
 itemNames = cell(0);
 fileNames = cell(0);
+circlePercentage = zeros(0);
 for k = 1 : length(theFiles)
     baseFileName = theFiles(k).name;
     
     fullFileName = fullfile(theFiles(k).folder, baseFileName);
 
-    itemNames(k) = {[baseFileName ' 50% likely to have mass']};
-    fileNames(k) = {fullFileName};
+
 
     fprintf(1, 'Now reading %s\n', fullFileName);
     disp(fullFileName);
@@ -98,9 +98,21 @@ for k = 1 : length(theFiles)
     % such as reading it in as an image array with imread()
     
     lungs_img = imread(fullFileName);
-
-    %TODO: SORT ItemNames from most to least
+    num_of_circles = check_circles(lungs_img, [0.22 0.6], 0.84, [0.21 0.55], 0.88);
+    imgPercent = num_of_circles/13;
+    circlePercentage(k) = imgPercent;
+    itemNames(k) = {[baseFileName ' ' num2str(imgPercent*100) '% likely to have mass']};
+    fileNames(k) = {fullFileName};
 end
+
+
+[~, sortedIndices] = sort(circlePercentage, 'descend');
+
+itemNames = itemNames(sortedIndices);
+fileNames = fileNames(sortedIndices);
+circlePercentage = circlePercentage(sortedIndices);
+
+
 %%
 % Create a figure
 fig = figure('Name', 'GUI', 'units', 'normalized', 'Position', [0.2, 0.2, 0.6, 0.6]);
@@ -127,7 +139,7 @@ end
 
 
 %%
-function find_circles(img, img_name, intensity_bw, circle_sens_bw, intensity_edge, circle_sens_edge)
+function [num_of_circles] = find_circles(img, img_name, intensity_bw, circle_sens_bw, intensity_edge, circle_sens_edge)
     % find_circles  tries to detect circles in the img based on the provided
     % thresholds
     %   find_circles(img, [min_in max_in], circle_sens) adjusts img contrast
@@ -165,12 +177,14 @@ function find_circles(img, img_name, intensity_bw, circle_sens_bw, intensity_edg
     img_BW = imbinarize(img_adjusted_bw);
     imshow(img_adjusted_bw)
     title("Contrast adjusted");
+    num_of_circles = 0;
     [centers, radii] = imfindcircles(img_BW,[9 50], 'ObjectPolarity','bright', 'Sensitivity', circle_sens_bw);
     if not(isempty(centers))
+        num_of_circles = num_of_circles + length(centers);
         max_len = min([length(radii) 3]); % only display up to the x strongest circles
         centersStrong5 = centers(1:max_len,:); 
         radiiStrong5 = radii(1:max_len);
-        viscircles(centersStrong5, radiiStrong5,'EdgeColor','b');
+        circle1 = viscircles(centersStrong5, radiiStrong5,'EdgeColor','b');
     else
         disp("No circles found.");
     end
@@ -186,33 +200,60 @@ function find_circles(img, img_name, intensity_bw, circle_sens_bw, intensity_edg
     [centers, radii] = imfindcircles(edges,[9 50], 'ObjectPolarity','bright', 'Sensitivity', circle_sens_edge);
     
     if not(isempty(centers))
+        num_of_circles = num_of_circles + length(centers);
         max_len = min([length(radii) 3]); % only display up to the x strongest circles
         centersStrong5 = centers(1:max_len,:); 
         radiiStrong5 = radii(1:max_len);
-        viscircles(centersStrong5, radiiStrong5,'EdgeColor','r');
+        circle2 = viscircles(centersStrong5, radiiStrong5,'EdgeColor','r');
+        
     else
         disp("No circles found.");
     end
-
 end
 
-%% 
-function edgeDe = edge_detections(lungs_img)
-    grayImg = im2gray(lungs_img);
+function [num_of_circles] = check_circles(img, intensity_bw, circle_sens_bw, intensity_edge, circle_sens_edge)
+    % find_circles  tries to detect circles in the img based on the provided
+    % thresholds
+    %   find_circles(img, [min_in max_in], circle_sens) adjusts img contrast
+    %   based on [min_in max_in] and detects circles based on circle_sens
+    % Inputs:
+    %   img         : the image to detect circles in
+    %   intensity   : [min = 0...1 max = 0...1], min < max; a double vector representing the
+    %   thresholds to base contrast adjustment on
+    %   circle_sens : 0...1; the threshold for circle detection. Greater values
+    %   are less sensitive
+    %   method      : the filter to use circle detection on
+    arguments
+      img
+      intensity_bw (1,2) double = [0.2 0.6]
+      circle_sens_bw double {mustBeInRange(circle_sens_bw,0,1)} = 0.85
+      intensity_edge (1,2) double = [0.2 0.6]
+      circle_sens_edge double {mustBeInRange(circle_sens_edge,0,1)} = 0.85
+    end
 
-    detection_types = ["Sobel", "Prewitt", "Roberts", "Log", "Canny", "Canny_old", "Zerocross", "Approxcanny"];
+    img = im2gray(img);
 
-    figure;
-    subplot(3, 3, 1);
-    imshow(grayImg);
-    title("Original Image");
+    img_adjusted_bw = imadjust(img, intensity_bw);
+        
+    img_BW = imbinarize(img_adjusted_bw);
 
-    plot_number = 2;
-    for type = detection_types
-        edges = edge(grayImg, type);
-        subplot(3, 3, plot_number);
-        plot_number = plot_number + 1;
-        imshow(edges);
-        title(type);
+    num_of_circles = 0;
+    [centers, radii] = imfindcircles(img_BW,[9 50], 'ObjectPolarity','bright', 'Sensitivity', circle_sens_bw);
+    if not(isempty(centers))
+        max_len = min([length(radii) 3]); % only display up to the x strongest circles
+        centersStrong5 = centers(1:max_len,:); 
+        num_of_circles = num_of_circles + length(centersStrong5);
+    end
+    
+    img_adjusted_edge = imadjust(img, intensity_edge);
+
+    img_BW = imbinarize(img_adjusted_edge);
+    edges = edge(img_BW, 'canny');
+    [centers, radii] = imfindcircles(edges,[9 50], 'ObjectPolarity','bright', 'Sensitivity', circle_sens_edge);
+    
+    if not(isempty(centers))
+        max_len = min([length(radii) 3]); % only display up to the x strongest circles
+        centersStrong5 = centers(1:max_len,:); 
+        num_of_circles = num_of_circles + length(centersStrong5);
     end
 end
