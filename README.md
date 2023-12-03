@@ -56,24 +56,17 @@ repository
 Provide sufficient instructions to reproduce and install your project. 
 Provide _exact_ versions, test on CSIL or reference workstations.
 
-```bash
-git clone $THISREPO
-cd $THISREPO
-conda env create -f requirements.yml
-conda activate amazing
+```
+To run this project, please clone this github repository, then run LungAnalyze.m which is located in the src folder. Then choose the samples or samples-normal folder or alternatively, provide your own images in your own folder.
 ```
 
 <a name="repro"></a>
 ## 3. Reproduction
 Demonstrate how your work can be reproduced, e.g. the results in your report.
-```bash
-mkdir tmp && cd tmp
-wget https://yourstorageisourbusiness.com/dataset.zip
-unzip dataset.zip
-conda activate amazing
-python evaluate.py --epochs=10 --data=/in/put/dir
 ```
-Data can be found at ...
+To reproduce the results in our report, please use our samples located in our two provided folders with LungAnalyze.m
+```
+Data can be found at [Kaggle Dataset](https://www.kaggle.com/datasets/diayruldip/carinocroma) and [NIHCC Dataset](https://nihcc.app.box.com/v/ChestXray-NIHCC)
 Output will be saved in ...
 
 <a name="guide"></a>
