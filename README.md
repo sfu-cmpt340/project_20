@@ -34,11 +34,8 @@ Record a short video (1:40 - 2 minutes maximum) or gif or a simple screen record
 
 A minimal example to showcase your work
 
-```python
-from amazing import amazingexample
-imgs = amazingexample.demo()
-for img in imgs:
-    view(img)
+```
+To run the project, please run LungAnalyze.m using matlab
 ```
 
 ### What to find where
@@ -47,11 +44,9 @@ Explain briefly what files are found where
 
 ```bash
 repository
-├── src                          ## source code of the package itself
-├── scripts                      ## scripts, if needed
+├── src                          ## source code of the project
 ├── docs                         ## If needed, documentation   
 ├── README.md                    ## You are here
-├── requirements.yml             ## If you use conda
 ```
 
 <a name="installation"></a>
