@@ -65,17 +65,18 @@
 % 
 % % Image Processing Toolbox Add-On
 
-%% 
-% Specify the folder where the files live.
-myFolder = 'samples-normal';
-% Check to make sure that folder actually exists.  Warn user if it doesn't.
-if ~isfolder(myFolder)
-    errorMessage = sprintf('Error: The following folder does not exist:\n%s\nPlease specify a new folder.', myFolder);
-    uiwait(warndlg(errorMessage));
-    myFolder = uigetdir(); % Ask for a new one.
-    if myFolder == 0
-         % User clicked Cancel
-         return;
+% Initialize myFolder to an empty string
+myFolder = '';
+
+% Keep prompting the user until a valid folder is provided
+while ~isfolder(myFolder)
+    % Prompt the user to manually input the folder path
+    myFolder = input('Enter the folder path: ', 's');
+
+    % Check if the folder exists
+    if ~isfolder(myFolder)
+        errorMessage = sprintf('Error: The following folder does not exist:\n%s\nPlease specify a valid folder.', myFolder);
+        uiwait(warndlg(errorMessage));
     end
 end
 % Get a list of all files in the folder with the desired file name pattern.
