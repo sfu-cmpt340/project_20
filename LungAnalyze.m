@@ -67,7 +67,7 @@
 
 %% 
 % Specify the folder where the files live.
-myFolder = 'samples';
+myFolder = 'samples-normal';
 % Check to make sure that folder actually exists.  Warn user if it doesn't.
 if ~isfolder(myFolder)
     errorMessage = sprintf('Error: The following folder does not exist:\n%s\nPlease specify a new folder.', myFolder);
@@ -99,7 +99,8 @@ for k = 1 : length(theFiles)
     
     lungs_img = imread(fullFileName);
     num_of_circles = check_circles(lungs_img, [0.22 0.6], 0.84, [0.21 0.55], 0.88);
-    imgPercent = num_of_circles/13;
+    imgPercent = round(num_of_circles/ (13+(k/10)), 4);
+
     circlePercentage(k) = imgPercent;
     itemNames(k) = {[baseFileName ' ' num2str(imgPercent*100) '% likely to have mass']};
     fileNames(k) = {fullFileName};
@@ -184,7 +185,7 @@ function [num_of_circles] = find_circles(img, img_name, intensity_bw, circle_sen
         max_len = min([length(radii) 3]); % only display up to the x strongest circles
         centersStrong5 = centers(1:max_len,:); 
         radiiStrong5 = radii(1:max_len);
-        circle1 = viscircles(centersStrong5, radiiStrong5,'EdgeColor','b');
+        viscircles(centersStrong5, radiiStrong5,'EdgeColor','b');
     else
         disp("No circles found.");
     end
@@ -204,7 +205,7 @@ function [num_of_circles] = find_circles(img, img_name, intensity_bw, circle_sen
         max_len = min([length(radii) 3]); % only display up to the x strongest circles
         centersStrong5 = centers(1:max_len,:); 
         radiiStrong5 = radii(1:max_len);
-        circle2 = viscircles(centersStrong5, radiiStrong5,'EdgeColor','r');
+        viscircles(centersStrong5, radiiStrong5,'EdgeColor','r');
         
     else
         disp("No circles found.");
