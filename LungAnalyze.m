@@ -1,13 +1,13 @@
 % % Lung CT Image Analyzer App
 % 
-disp('Welcome to the Lung CT Image Analyzer App!');
-disp('This app allows you to view and analyze lung CT images.');
+% disp('Welcome to the Lung CT Image Analyzer App!');
+% disp('This app allows you to view and analyze lung CT images.');
 % disp('You can choose a lung CT image (1-20) for analysis, and');
-disp('the app will display the original image and perform edge detection.');
+% disp('the app will display the original image and perform edge detection.');
 % disp('You can choose to continue analyzing more images or exit the app.');
-disp("--------------------------------------------------------------------------------");
+% disp("--------------------------------------------------------------------------------");
 % 
-
+% while true
 %     % Ask the user for the lung CT image number
 %     image_number = input('Enter the lung CT image number to view (1-20), or enter 0 to exit: ');
 % 
@@ -67,20 +67,15 @@ disp("--------------------------------------------------------------------------
 
 %% 
 % Specify the folder where the files live.
-% Prompt the user to manually input the folder path
-% Initialize myFolder to an empty string
-% Initialize myFolder to an empty string
-myFolder = '';
-
-% Keep prompting the user until a valid folder is provided
-while ~isfolder(myFolder)
-    % Prompt the user to manually input the folder path
-    myFolder = input('Enter the folder path: ', 's');
-
-    % Check if the folder exists
-    if ~isfolder(myFolder)
-        errorMessage = sprintf('Error: The following folder does not exist:\n%s\nPlease specify a valid folder.', myFolder);
-        uiwait(warndlg(errorMessage));
+myFolder = 'samples-normal';
+% Check to make sure that folder actually exists.  Warn user if it doesn't.
+if ~isfolder(myFolder)
+    errorMessage = sprintf('Error: The following folder does not exist:\n%s\nPlease specify a new folder.', myFolder);
+    uiwait(warndlg(errorMessage));
+    myFolder = uigetdir(); % Ask for a new one.
+    if myFolder == 0
+         % User clicked Cancel
+         return;
     end
 end
 % Get a list of all files in the folder with the desired file name pattern.
@@ -104,7 +99,8 @@ for k = 1 : length(theFiles)
     
     lungs_img = imread(fullFileName);
     num_of_circles = check_circles(lungs_img, [0.22 0.6], 0.84, [0.21 0.55], 0.88);
-    imgPercent = num_of_circles/13;
+    imgPercent = round(num_of_circles/ (13+(k/10)), 4);
+
     circlePercentage(k) = imgPercent;
     itemNames(k) = {[baseFileName ' ' num2str(imgPercent*100) '% likely to have mass']};
     fileNames(k) = {fullFileName};
@@ -189,7 +185,7 @@ function [num_of_circles] = find_circles(img, img_name, intensity_bw, circle_sen
         max_len = min([length(radii) 3]); % only display up to the x strongest circles
         centersStrong5 = centers(1:max_len,:); 
         radiiStrong5 = radii(1:max_len);
-        circle1 = viscircles(centersStrong5, radiiStrong5,'EdgeColor','b');
+        viscircles(centersStrong5, radiiStrong5,'EdgeColor','b');
     else
         disp("No circles found.");
     end
@@ -209,7 +205,7 @@ function [num_of_circles] = find_circles(img, img_name, intensity_bw, circle_sen
         max_len = min([length(radii) 3]); % only display up to the x strongest circles
         centersStrong5 = centers(1:max_len,:); 
         radiiStrong5 = radii(1:max_len);
-        circle2 = viscircles(centersStrong5, radiiStrong5,'EdgeColor','r');
+        viscircles(centersStrong5, radiiStrong5,'EdgeColor','r');
         
     else
         disp("No circles found.");
