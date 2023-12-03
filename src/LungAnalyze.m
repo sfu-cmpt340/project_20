@@ -4,9 +4,9 @@ myFolder = 'samples';
 
 % Check to make sure that folder actually exists.  Warn user if it doesn't.
 if ~isfolder(myFolder)
-    errorMessage = sprintf('Please specify a new folder.\nTo use the provided sample folder, please use /src/samples for samples with mass, or use /src/samples-normal without mass', myFolder);
+    errorMessage = sprintf('Please specify a new folder.\nTo use the provided sample folder, please use samples for samples with mass, or use samples-normal without mass', myFolder);
     uiwait(warndlg(errorMessage));
-    myFolder = uigetdir(); % Ask for a new one.
+    myFolder = uigetdir('src'); % Ask for a new one.
     if myFolder == 0
          % User clicked Cancel
          return;
