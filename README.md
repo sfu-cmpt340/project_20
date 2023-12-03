@@ -67,7 +67,6 @@ Demonstrate how your work can be reproduced, e.g. the results in your report.
 To reproduce the results in our report, please use our samples located in our two provided folders with LungAnalyze.m
 ```
 Data can be found at [Kaggle Dataset](https://www.kaggle.com/datasets/diayruldip/carinocroma) and [NIHCC Dataset](https://nihcc.app.box.com/v/ChestXray-NIHCC)
-Output will be saved in ...
 
 <a name="guide"></a>
 ## 4. Guidance
