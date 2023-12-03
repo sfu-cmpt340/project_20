@@ -13,10 +13,10 @@ Add a 1-2 line summary of your project here.
 ## Video/demo/GIF
 Record a short video (1:40 - 2 minutes maximum) or gif or a simple screen recording or even using PowerPoint with audio or with text, showcasing your work.
 
-![Alt text](https://i.imgur.com/7bhI5J0.png)
-![Alt text](https://i.imgur.com/7bhI5J0.png)
-![Alt text](https://i.imgur.com/7bhI5J0.png)
-![Alt text](https://i.imgur.com/7bhI5J0.png)
+![Folder instructions](https://i.imgur.com/7bhI5J0.png)
+![Choosing Folder](https://i.imgur.com/TpgQZEN.png)
+![Choosing Images](https://i.imgur.com/9xmU8wq.png)
+![Observations](https://i.imgur.com/srq4UDi.png)
 
 
 ## Table of Contents
