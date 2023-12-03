@@ -10,11 +10,6 @@ Add a 1-2 line summary of your project here.
 |-----------|---------------|-------------------------|
 
 
-- Timesheet: Link your timesheet (pinned in your project's Slack channel) where you track per student the time and tasks completed/participated for this project/
-- Slack channel: Link your private Slack project channel.
-- Project report: Link your Overleaf project report document.
-
-
 ## Video/demo/GIF
 Record a short video (1:40 - 2 minutes maximum) or gif or a simple screen recording or even using PowerPoint with audio or with text, showcasing your work.
 
