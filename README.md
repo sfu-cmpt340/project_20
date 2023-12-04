@@ -1,8 +1,4 @@
 # Lung Cancer Detection and Classification with Data-Driven Edge AI
-This repository is a template for your CMPT 340 course project.
-Replace the title with your project title, and **add a snappy acronym that people remember (mnemonic)**.
-
-Add a 1-2 line summary of your project here.
 
 ## Important Links
 
@@ -30,15 +26,7 @@ Record a short video (1:40 - 2 minutes maximum) or gif or a simple screen record
 
 
 <a name="demo"></a>
-## 1. Example demo
-
-A minimal example to showcase your work
-
-```
-To run the project, please install the Matlab Image Processing Toolbox addon and run LungAnalyze.m using matlab
-```
-
-### What to find where
+## 1. What to find where
 
 Explain briefly what files are found where
 
