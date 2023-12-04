@@ -16,7 +16,7 @@ Record a short video (1:40 - 2 minutes maximum) or gif or a simple screen record
 
 
 ## Table of Contents
-1. [Demo](#demo)
+1. [Files](#files)
 
 2. [Installation](#installation)
 
@@ -26,7 +26,9 @@ Record a short video (1:40 - 2 minutes maximum) or gif or a simple screen record
 
 
 <a name="demo"></a>
-## 1. What to find where
+## 1. Files
+
+###What to find where
 
 Explain briefly what files are found where
 
