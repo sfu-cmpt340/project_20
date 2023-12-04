@@ -53,19 +53,19 @@ repository
 
 ## 2. Installation
 
-Provide sufficient instructions to reproduce and install your project. 
-Provide _exact_ versions, test on CSIL or reference workstations.
+To run this project
+1. Clone/Download this github repository.
+2. Then install the MATLAB Image Processing Toolbox addon.
+3. Run LungAnalyze.m which is located in the src folder.
+4. Then choose the samples or samples-normal folder or alternatively, provide your own images in your own folder.
 
-```
-To run this project, please clone this github repository, then install the Matlab Image Processing Toolbox addon, then run LungAnalyze.m which is located in the src folder. Then choose the samples or samples-normal folder or alternatively, provide your own images in your own folder.
-```
 
 <a name="repro"></a>
 ## 3. Reproduction
 Demonstrate how your work can be reproduced, e.g. the results in your report.
-```
+
 To reproduce the results in our report, please use our samples located in our two provided folders with LungAnalyze.m
-```
+
 Data can be found at [Kaggle Dataset](https://www.kaggle.com/datasets/diayruldip/carinocroma) and [NIHCC Dataset](https://nihcc.app.box.com/v/ChestXray-NIHCC)
 
 <a name="guide"></a>
