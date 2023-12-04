@@ -15,6 +15,10 @@ Record a short video (1:40 - 2 minutes maximum) or gif or a simple screen record
 ![Observations](https://i.imgur.com/srq4UDi.png)
 
 
+https://github.com/sfu-cmpt340/project_20/assets/73415577/5dbc4bb2-26c7-4fd8-bcbb-167a2e68d486
+
+
+
 ## Table of Contents
 1. [Files](#files)
 
