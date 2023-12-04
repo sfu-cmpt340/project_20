@@ -35,7 +35,7 @@ Record a short video (1:40 - 2 minutes maximum) or gif or a simple screen record
 A minimal example to showcase your work
 
 ```
-To run the project, please run LungAnalyze.m using matlab
+To run the project, please install the Matlab Image Processing Toolbox addon and run LungAnalyze.m using matlab
 ```
 
 ### What to find where
@@ -57,7 +57,7 @@ Provide sufficient instructions to reproduce and install your project.
 Provide _exact_ versions, test on CSIL or reference workstations.
 
 ```
-To run this project, please clone this github repository, then run LungAnalyze.m which is located in the src folder. Then choose the samples or samples-normal folder or alternatively, provide your own images in your own folder.
+To run this project, please clone this github repository, then install the Matlab Image Processing Toolbox addon, then run LungAnalyze.m which is located in the src folder. Then choose the samples or samples-normal folder or alternatively, provide your own images in your own folder.
 ```
 
 <a name="repro"></a>
